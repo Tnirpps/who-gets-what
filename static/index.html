@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17152d">
+  <title>who-gets-what</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="who-gets-what — на главную">
+      <span class="brand-mark">?</span> who-gets-what
+    </a>
+  </header>
+
+  <main>
+    <section id="setup" class="setup">
+      <div class="intro">
+        <h1>Кому что достанется?</h1>
+        <p class="privacy">Списки никуда не сохраняются и не отправляются во внешние сервисы</p>
+      </div>
+
+      <div class="input-grid">
+        <article class="card input-card">
+          <div class="card-title">
+            <span class="number">01</span>
+            <div><h2>Участники</h2><p>По одному на строку</p></div>
+          </div>
+          <textarea id="participants" rows="9" placeholder="Анна&#10;Борис&#10;Вера" spellcheck="false"></textarea>
+          <div class="file-row">
+            <label class="file-button" for="participants-file">＋ Загрузить TXT</label>
+            <input id="participants-file" type="file" accept=".txt,text/plain">
+            <span id="participants-count" class="count">0 участников</span>
+          </div>
+        </article>
+
+        <article class="card input-card">
+          <div class="card-title">
+            <span class="number coral">02</span>
+            <div><h2>Варианты</h2><p>По одному на строку</p></div>
+          </div>
+          <textarea id="variants" rows="9" placeholder="Вариант 1&#10;Вариант 2&#10;Вариант 3" spellcheck="false"></textarea>
+          <div class="file-row">
+            <label class="file-button" for="variants-file">＋ Загрузить TXT</label>
+            <input id="variants-file" type="file" accept=".txt,text/plain">
+            <span id="variants-count" class="count">0 вариантов</span>
+          </div>
+        </article>
+      </div>
+
+      <div id="setup-error" class="message error" role="alert" hidden></div>
+      <button id="start" class="primary big-button">Начать распределение <span>→</span></button>
+      
+    </section>
+
+    <section id="game" class="game" hidden>
+      <div class="game-grid">
+        <article class="card wheel-card">
+          <div id="turn-label" class="turn-label">Сейчас выбираем для</div>
+          <div id="current-person" class="current-person"></div>
+          <div class="wheel-wrap">
+            <div class="pointer" aria-hidden="true"></div>
+            <canvas id="wheel" width="680" height="680" aria-label="Колесо вариантов"></canvas>
+          </div>
+          <div class="spin-actions">
+            <button id="spin" class="primary spin-button">Крутить <span>↗</span></button>
+            <button id="spin-all" class="secondary auto-button">Крутить для всех</button>
+          </div>
+          <div id="result-popover" class="result-popover" role="status" aria-live="polite" aria-atomic="true" hidden>
+            <span class="result-spark">✦</span>
+            <p id="result-person"></p>
+            <strong id="result-variant"></strong>
+          </div>
+        </article>
+
+        <aside class="card results-card">
+          <div class="results-head"><h2>Результаты</h2><span id="progress">0 / 0</span></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Участник</th><th>Вариант</th></tr></thead>
+              <tbody id="results-body"></tbody>
+            </table>
+            <div id="empty-results" class="empty-results"><span>✦</span><p>Здесь появятся результаты</p></div>
+          </div>
+          <div id="remaining" class="remaining" hidden></div>
+          <button id="download" class="secondary download" disabled>↓ Скачать результаты CSV</button>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>
