@@ -25,7 +25,7 @@
         <article class="card input-card">
           <div class="card-title">
             <span class="number">01</span>
-            <div><h2>Участники</h2><p>По одному на строку</p></div>
+            <div><h2>Кто участвует</h2><p>По одному имени на строку</p></div>
           </div>
           <textarea id="participants" rows="9" placeholder="Анна&#10;Борис&#10;Вера" spellcheck="false"></textarea>
           <div class="file-row">
@@ -38,19 +38,19 @@
         <article class="card input-card">
           <div class="card-title">
             <span class="number coral">02</span>
-            <div><h2>Варианты</h2><p>По одному на строку</p></div>
+            <div><h2>Что раздаём</h2><p>По одному пункту на строку</p></div>
           </div>
-          <textarea id="variants" rows="9" placeholder="Вариант 1&#10;Вариант 2&#10;Вариант 3" spellcheck="false"></textarea>
+          <textarea id="variants" rows="9" placeholder="Подготовить презентацию&#10;Заказать пиццу&#10;Выбрать фильм" spellcheck="false"></textarea>
           <div class="file-row">
             <label class="file-button" for="variants-file">＋ Загрузить TXT</label>
             <input id="variants-file" type="file" accept=".txt,text/plain">
-            <span id="variants-count" class="count">0 вариантов</span>
+            <span id="variants-count" class="count">0 пунктов</span>
           </div>
         </article>
       </div>
 
       <div id="setup-error" class="message error" role="alert" hidden></div>
-      <button id="start" class="primary big-button">Начать распределение <span>→</span></button>
+      <button id="start" class="primary big-button">Начать выбор <span>→</span></button>
       
     </section>
 
@@ -61,7 +61,7 @@
           <div id="current-person" class="current-person"></div>
           <div class="wheel-wrap">
             <div class="pointer" aria-hidden="true"></div>
-            <canvas id="wheel" width="680" height="680" aria-label="Колесо вариантов"></canvas>
+            <canvas id="wheel" width="680" height="680" aria-label="Колесо выбора"></canvas>
           </div>
           <div class="spin-actions">
             <button id="spin" class="primary spin-button">Крутить <span>↗</span></button>
@@ -78,7 +78,7 @@
           <div class="results-head"><h2>Результаты</h2><span id="progress">0 / 0</span></div>
           <div class="table-wrap">
             <table>
-              <thead><tr><th>Участник</th><th>Вариант</th></tr></thead>
+              <thead><tr><th>Кому</th><th>Что досталось</th></tr></thead>
               <tbody id="results-body"></tbody>
             </table>
             <div id="empty-results" class="empty-results"><span>✦</span><p>Здесь появятся результаты</p></div>

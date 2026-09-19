@@ -28,7 +28,7 @@ type distributionResponse struct {
 func main() {
 	log.SetFlags(0)
 	participantsPath := flag.String("participants", "", "путь к TXT-файлу с участниками")
-	variantsPath := flag.String("variants", "", "путь к TXT-файлу с вариантами")
+	variantsPath := flag.String("variants", "", "путь к TXT-файлу с тем, что нужно раздать")
 	outputPath := flag.String("output", "", "путь для результата CSV (по умолчанию stdout)")
 	flag.Parse()
 
@@ -93,7 +93,7 @@ func distributeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(req.Variants) == 0 {
-		writeError(w, "Добавьте хотя бы один вариант.", http.StatusBadRequest)
+		writeError(w, "Добавьте хотя бы один пункт во второй список.", http.StatusBadRequest)
 		return
 	}
 

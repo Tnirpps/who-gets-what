@@ -17,13 +17,13 @@ func distributeTextFiles(participantsPath, variantsPath string) ([]Assignment, e
 	}
 	variants, err := readTextList(variantsPath)
 	if err != nil {
-		return nil, fmt.Errorf("не удалось прочитать варианты: %w", err)
+		return nil, fmt.Errorf("не удалось прочитать второй список: %w", err)
 	}
 	if len(participants) == 0 {
 		return nil, errors.New("файл участников пуст")
 	}
 	if len(variants) == 0 {
-		return nil, errors.New("файл вариантов пуст")
+		return nil, errors.New("файл со вторым списком пуст")
 	}
 	return Distribute(participants, variants)
 }

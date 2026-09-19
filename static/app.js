@@ -34,7 +34,7 @@ function updateCounts() {
   const p = lines(participantsInput.value).length;
   const v = lines(variantsInput.value).length;
   $("#participants-count").textContent = `${p} ${plural(p, ["участник", "участника", "участников"])}`;
-  $("#variants-count").textContent = `${v} ${plural(v, ["вариант", "варианта", "вариантов"])}`;
+  $("#variants-count").textContent = `${v} ${plural(v, ["пункт", "пункта", "пунктов"])}`;
 }
 
 participantsInput.addEventListener("input", updateCounts);
@@ -75,11 +75,11 @@ $("#start").addEventListener("click", async () => {
   const variants = lines(variantsInput.value);
   $("#setup-error").hidden = true;
   if (!participants.length) return showError("Добавьте хотя бы одного участника.");
-  if (!variants.length) return showError("Добавьте хотя бы один вариант.");
+  if (!variants.length) return showError("Добавьте хотя бы один пункт во второй список.");
 
   const button = $("#start");
   button.disabled = true;
-  button.textContent = "Распределяем…";
+  button.textContent = "Выбираем…";
   try {
     const response = await fetch("/api/distribute", {
       method: "POST",
@@ -87,7 +87,7 @@ $("#start").addEventListener("click", async () => {
       body: JSON.stringify({ participants, variants })
     });
     const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Не удалось выполнить распределение.");
+    if (!response.ok) throw new Error(data.error || "Не удалось провести выбор.");
     assignments = data.assignments;
     originalVariants = variants.slice();
     beginGame();
@@ -95,7 +95,7 @@ $("#start").addEventListener("click", async () => {
     showError(error.message || "Сервер недоступен. Попробуйте ещё раз.");
   } finally {
     button.disabled = false;
-    button.innerHTML = 'Начать распределение <span>→</span>';
+    button.innerHTML = 'Начать выбор <span>→</span>';
   }
 });
 
@@ -280,20 +280,20 @@ function stopAuto() {
 function finishGame() {
   stopAuto();
   $("#turn-label").textContent = "Готово!";
-  $("#current-person").textContent = "Все варианты распределены";
+  $("#current-person").textContent = "Все получили результат";
   $("#spin").disabled = true;
   $("#spin-all").disabled = true;
-  $("#spin").textContent = "Распределение завершено ✓";
+  $("#spin").textContent = "Всё готово ✓";
   $("#download").disabled = false;
   const leftovers = wheelEntries();
   const box = $("#remaining");
   box.hidden = false;
   if (leftovers.length) {
     const text = leftovers.flatMap(([name, count]) => Array(count).fill(name)).join(", ");
-    box.innerHTML = "<strong>Не использованы:</strong> ";
+    box.innerHTML = "<strong>Никому не достались:</strong> ";
     box.append(document.createTextNode(text));
   } else {
-    box.innerHTML = "<strong>Неиспользованных вариантов нет.</strong>";
+    box.innerHTML = "<strong>Каждый пункт кому-то достался.</strong>";
   }
 }
 
