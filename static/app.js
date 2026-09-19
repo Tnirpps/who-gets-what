@@ -229,6 +229,7 @@ function revealResult() {
   $(".table-wrap").scrollTo({ top: 0, behavior: "smooth" });
   $("#empty-results").hidden = true;
   revealed++;
+  $("#progress").textContent = `${revealed} / ${assignments.length}`;
   showResultPopover(assignment, () => {
     remaining.set(assignment.variant, remaining.get(assignment.variant) - 1);
     rotation = 0;
