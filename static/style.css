@@ -65,6 +65,10 @@ input[type=file] { position: absolute; width: 1px; height: 1px; opacity: 0; }
 .spin-button:disabled { cursor: not-allowed; opacity: .58; }
 .auto-button { min-width: 175px; }
 .auto-button.active { color: #a72c21; border-color: #ffc9c1; background: #fff0ed; }
+.instant-button { margin-top: 8px; padding: 8px 12px; border: 0; border-radius: 8px; background: transparent; color: var(--muted); font-size: 13px; }
+.instant-button:hover:not(:disabled) { color: var(--purple-dark); background: #f4f1ff; }
+.instant-button:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
+.instant-button:disabled { cursor: default; opacity: .45; }
 .result-popover { position: absolute; z-index: 5; left: 50%; top: 47%; width: min(340px, calc(100% - 42px)); padding: 22px 25px 24px; border: 1px solid rgba(113,87,239,.18); border-radius: 20px; background: rgba(255,255,255,.97); box-shadow: 0 22px 70px rgba(23,21,45,.3); transform: translate(-50%, -50%) scale(.84); opacity: 0; pointer-events: none; }
 .result-popover.show { animation: resultPop 2.15s ease both; }
 .result-popover p { margin: 3px 0 6px; color: var(--muted); font-size: 15px; }

@@ -16,6 +16,7 @@ let spinning = false;
 let autoMode = false;
 let autoTimer = 0;
 let popoverTimer = 0;
+let spinFrame = 0;
 
 function lines(value) {
   return value.split(/\r?\n/).map((s) => s.trim()).filter(Boolean);
@@ -102,6 +103,11 @@ $("#start").addEventListener("click", async () => {
 function beginGame() {
   stopAuto();
   hideResultPopover();
+  cancelAnimationFrame(spinFrame);
+  spinning = false;
+  $("#spin-all").disabled = false;
+  $("#instant").disabled = false;
+  $("#spin").innerHTML = 'Крутить <span>↗</span>';
   revealed = 0;
   rotation = 0;
   remaining = new Map();
@@ -176,6 +182,23 @@ function updateTurn() {
 }
 
 $("#spin").addEventListener("click", startSpin);
+$("#instant").addEventListener("click", finishInstantly);
+
+function finishInstantly() {
+  if (revealed >= assignments.length && !spinning) return;
+  cancelAnimationFrame(spinFrame);
+  stopAuto();
+  hideResultPopover();
+  spinning = false;
+  const rows = document.createDocumentFragment();
+  while (revealed < assignments.length) appendResult(rows, false);
+  $("#results-body").prepend(rows);
+  $("#empty-results").hidden = true;
+  $(".table-wrap").scrollTo({ top: 0, behavior: "instant" });
+  rotation = 0;
+  drawWheel();
+  updateTurn();
+}
 
 $("#spin-all").addEventListener("click", () => {
   if (revealed >= assignments.length) return;
@@ -210,28 +233,33 @@ function startSpin() {
     const eased = 1 - Math.pow(1 - t, 4);
     rotation = from + (to - from) * eased;
     drawWheel();
-    if (t < 1) requestAnimationFrame(frame);
+    if (t < 1) spinFrame = requestAnimationFrame(frame);
     else revealResult();
   }
-  requestAnimationFrame(frame);
+  spinFrame = requestAnimationFrame(frame);
 }
 
-function revealResult() {
+function appendResult(container, animated = true) {
   const assignment = assignments[revealed];
   const row = document.createElement("tr");
-  row.className = "new-row";
+  if (animated) row.className = "new-row";
   const person = document.createElement("td");
   const variant = document.createElement("td");
   person.textContent = assignment.participant;
   variant.textContent = assignment.variant;
   row.append(person, variant);
-  $("#results-body").prepend(row);
+  container.prepend(row);
+  remaining.set(assignment.variant, remaining.get(assignment.variant) - 1);
+  revealed++;
+  return assignment;
+}
+
+function revealResult() {
+  const assignment = appendResult($("#results-body"));
   $(".table-wrap").scrollTo({ top: 0, behavior: "smooth" });
   $("#empty-results").hidden = true;
-  revealed++;
   $("#progress").textContent = `${revealed} / ${assignments.length}`;
   showResultPopover(assignment, () => {
-    remaining.set(assignment.variant, remaining.get(assignment.variant) - 1);
     rotation = 0;
     drawWheel();
     spinning = false;
@@ -284,6 +312,7 @@ function finishGame() {
   $("#current-person").textContent = "Все получили результат";
   $("#spin").disabled = true;
   $("#spin-all").disabled = true;
+  $("#instant").disabled = true;
   $("#spin").textContent = "Всё готово ✓";
   $("#download").disabled = false;
   const leftovers = wheelEntries();
